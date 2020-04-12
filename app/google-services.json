@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "758038682671",
+    "firebase_url": "https://mysupermessenger.firebaseio.com",
+    "project_id": "mysupermessenger",
+    "storage_bucket": "mysupermessenger.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:758038682671:android:9bb688a633ef0a2613bada",
+        "android_client_info": {
+          "package_name": "com.example.mymessenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "758038682671-orctmit5gpebiqe30lnonjg81f2l6hhg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mymessenger",
+            "certificate_hash": "cd7de9a485940b64ebc10a04650b463bbea63391"
+          }
+        },
+        {
+          "client_id": "758038682671-ckoa59c5ot42h69aa31mi640n6ls1vh4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjHToVA6a5sYwUCSVSV6MCEAcIWTyHNxM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "758038682671-ckoa59c5ot42h69aa31mi640n6ls1vh4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
