@@ -10,7 +10,8 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:divider="@android:color/transparent"
         android:transcriptMode="alwaysScroll"
         tools:listitem="@layout/message_item" />
@@ -22,8 +23,15 @@
 
         <EditText
             android:id="@+id/messageEditText"
+            android:hint="You message"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/sendMessageButton"
+            android:text="Send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
