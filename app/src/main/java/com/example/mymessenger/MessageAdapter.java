@@ -25,9 +25,22 @@ public class MessageAdapter extends ArrayAdapter<AwesomeMessage> {
 
         if (convertView == null){
             convertView = ((Activity)getContext()).getLayoutInflater().inflate(R.layout.message_item,parent,false);
-            ImageView imageViewPhoto = convertView.findViewById(R.id.photoImageView);
-            TextView textViewText = convertView.findViewById(R.id.textTextView);
-            TextView textViewName = convertView.findViewById(R.id.nameTextView);
+        }
+        ImageView imageViewPhoto = convertView.findViewById(R.id.photoImageView);
+        TextView textViewText = convertView.findViewById(R.id.textTextView);
+        TextView textViewName = convertView.findViewById(R.id.nameTextView);
+
+        AwesomeMessage message = getItem(position);
+
+        boolean isText = message.getImageURL() == null;
+
+        if (isText) {
+            textViewText.setVisibility(View.VISIBLE);
+            imageViewPhoto.setVisibility(View.GONE);
+            textViewName.setText(message.getText());
+        }else {
+            textViewText.setVisibility(View.GONE);
+            imageViewPhoto.setVisibility(View.VISIBLE);
         }
 
         return super.getView(position, convertView, parent);

@@ -24,8 +24,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:background="@drawable/ic_image_black_24dp"
             android:id="@+id/sendPhotoButton"
+            android:background="@drawable/ic_image_black_24dp"
             android:layout_width="40dp"
             android:layout_height="40dp"/>
 
