@@ -9,6 +9,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private ListView listView;
@@ -32,5 +35,9 @@ public class MainActivity extends AppCompatActivity {
         sendImageButton = findViewById(R.id.sendPhotoButton);
         sendMessageButton = findViewById(R.id.sendMessageButton);
         messageEditText = findViewById(R.id.messageEditText);
+
+        List<AwesomeMessage> messages = new ArrayList<>();
+        adapter = new MessageAdapter(this,R.layout.message_item,messages);
+        listView.setAdapter(adapter);
     }
 }
