@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        messageEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(500)});
 
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
