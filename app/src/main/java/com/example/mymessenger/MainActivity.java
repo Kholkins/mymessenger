@@ -14,6 +14,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +31,17 @@ public class MainActivity extends AppCompatActivity {
 
     private String username;
 
+    FirebaseDatabase database;
+    DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference().child("messages");
+        databaseReference.setValue("Hello, World!");
 
         username = "Default User";
 
