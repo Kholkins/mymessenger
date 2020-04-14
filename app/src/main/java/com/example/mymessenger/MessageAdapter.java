@@ -39,7 +39,7 @@ public class MessageAdapter extends ArrayAdapter<AwesomeMessage> {
         if (isText) {
             textViewText.setVisibility(View.VISIBLE);
             imageViewPhoto.setVisibility(View.GONE);
-            textViewName.setText(message.getText());
+            textViewText.setText(message.getText());
         }else {
             textViewText.setVisibility(View.GONE);
             imageViewPhoto.setVisibility(View.VISIBLE);

@@ -36,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
     private String username;
 
-    FirebaseDatabase database;
-    DatabaseReference messageDatabaseReference;
-    ChildEventListener messageChildEventListener;
+    private FirebaseDatabase database;
+    private DatabaseReference messageDatabaseReference;
+    private ChildEventListener messagesChildEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +105,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        messageChildEventListener = new ChildEventListener() {
+        messagesChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                AwesomeMessage message = dataSnapshot.getValue(AwesomeMessage.class);
+                AwesomeMessage message =
+                        dataSnapshot.getValue(AwesomeMessage.class);
                 adapter.add(message);
             }
 
@@ -133,6 +134,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        messageDatabaseReference.addChildEventListener(messageChildEventListener);
+        messageDatabaseReference.addChildEventListener(messagesChildEventListener);
     }
 }
