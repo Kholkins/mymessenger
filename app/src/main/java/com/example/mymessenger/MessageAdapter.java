@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class MessageAdapter extends ArrayAdapter<AwesomeMessage> {
@@ -41,8 +43,11 @@ public class MessageAdapter extends ArrayAdapter<AwesomeMessage> {
         }else {
             textViewText.setVisibility(View.GONE);
             imageViewPhoto.setVisibility(View.VISIBLE);
+            Glide.with(imageViewPhoto.getContext()).load(message.getImageURL()).into(imageViewPhoto);
         }
 
-        return super.getView(position, convertView, parent);
+        textViewName.setText(message.getName());
+
+        return convertView;
     }
 }
