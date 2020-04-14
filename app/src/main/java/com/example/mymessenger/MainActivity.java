@@ -3,6 +3,9 @@ package com.example.mymessenger;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -39,5 +42,38 @@ public class MainActivity extends AppCompatActivity {
         List<AwesomeMessage> messages = new ArrayList<>();
         adapter = new MessageAdapter(this,R.layout.message_item,messages);
         listView.setAdapter(adapter);
+
+        progressBar.setVisibility(View.INVISIBLE);
+
+        messageEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        sendMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 messageEditText.setText("");
+            }
+        });
+
+        sendImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }
