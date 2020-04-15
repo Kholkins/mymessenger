@@ -75,4 +75,7 @@ public class SignInActivity extends AppCompatActivity {
                 });
         startActivity(new Intent(SignInActivity.this, MainActivity.class));
     }
+
+    public void toggleLoginMode(View view) {
+    }
 }
