@@ -57,6 +57,30 @@ public class SignInActivity extends AppCompatActivity {
 
     private void loginSignUpMetod(String email, String password) {
 
+        if (loginModeActive) {
+            auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithEmail:success");
+                                FirebaseUser user = auth.getCurrentUser();
+//                                updateUI(user);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(SignInActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+//                                updateUI(null);
+                                // ...
+                            }
+
+                            // ...
+                        }
+                    });
+        }
+
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -90,7 +114,7 @@ public class SignInActivity extends AppCompatActivity {
             loginModeActive = true;
             loginSignUpButton.setText("Log In");
             toggleLoginSignUpTextView.setText("Or, Sign Up");
-            repeatPasswordEditText.setVisibility(View.INVISIBLE);
+            repeatPasswordEditText.setVisibility(View.GONE);
         }
     }
 }
