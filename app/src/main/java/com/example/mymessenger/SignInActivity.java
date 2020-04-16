@@ -67,6 +67,7 @@ public class SignInActivity extends AppCompatActivity {
                                 Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = auth.getCurrentUser();
 //                                updateUI(user);
+                                startActivity(new Intent(SignInActivity.this, MainActivity.class));
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -89,6 +90,7 @@ public class SignInActivity extends AppCompatActivity {
                                 Log.d(TAG, "createUserWithEmail:success");
                                 FirebaseUser user = auth.getCurrentUser();
 //                            updateUI(user);
+                                startActivity(new Intent(SignInActivity.this, MainActivity.class));
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -100,7 +102,7 @@ public class SignInActivity extends AppCompatActivity {
                             // ...
                         }
                     });
-            startActivity(new Intent(SignInActivity.this, MainActivity.class));
+
         }
 
 
