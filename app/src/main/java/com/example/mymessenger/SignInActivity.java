@@ -27,8 +27,11 @@ public class SignInActivity extends AppCompatActivity {
     private EditText nameEditText;
     private Button loginSignUpButton;
     private TextView toggleLoginSignUpTextView;
+    private TextView repeatPasswordEditText;
 
     private FirebaseAuth auth;
+
+    private Boolean loginModeActive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class SignInActivity extends AppCompatActivity {
         nameEditText = findViewById(R.id.nameEditText);
         loginSignUpButton = findViewById(R.id.loginSignUpButton);
         toggleLoginSignUpTextView = findViewById(R.id.toggleLoginSignUpTextView);
+        repeatPasswordEditText = findViewById(R.id.repeatPasswordEditText);
 
         auth = FirebaseAuth.getInstance();
 
@@ -77,5 +81,16 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void toggleLoginMode(View view) {
+        if (loginModeActive){
+            loginModeActive = false;
+            loginSignUpButton.setText("Sign Up");
+            toggleLoginSignUpTextView.setText("Or, Log In");
+            repeatPasswordEditText.setVisibility(View.VISIBLE);
+        }else {
+            loginModeActive = true;
+            loginSignUpButton.setText("Log In");
+            toggleLoginSignUpTextView.setText("Or, Sign Up");
+            repeatPasswordEditText.setVisibility(View.INVISIBLE);
+        }
     }
 }
