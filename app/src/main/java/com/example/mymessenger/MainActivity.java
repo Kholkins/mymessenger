@@ -9,6 +9,8 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -135,5 +137,13 @@ public class MainActivity extends AppCompatActivity {
         };
 
         messageDatabaseReference.addChildEventListener(messagesChildEventListener);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+
+        return super.onCreateOptionsMenu(menu);
     }
 }
