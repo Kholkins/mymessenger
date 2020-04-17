@@ -38,14 +38,18 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+        auth = FirebaseAuth.getInstance();
+
+        if (auth.getCurrentUser() != null){
+            startActivity(new Intent(SignInActivity.this, MainActivity.class));
+        }
+
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         nameEditText = findViewById(R.id.nameEditText);
         loginSignUpButton = findViewById(R.id.loginSignUpButton);
         toggleLoginSignUpTextView = findViewById(R.id.toggleLoginSignUpTextView);
         repeatPasswordEditText = findViewById(R.id.repeatPasswordEditText);
-
-        auth = FirebaseAuth.getInstance();
 
         loginSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
