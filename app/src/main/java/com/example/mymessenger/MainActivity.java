@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -156,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.sign_out:
                 FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(MainActivity.this,SignInActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
         }
