@@ -101,6 +101,7 @@ public class SignInActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success");
                                     FirebaseUser user = auth.getCurrentUser();
+                                    createUser(user);
 //                            updateUI(user);
                                     startActivity(new Intent(SignInActivity.this, MainActivity.class));
                                 } else {
@@ -116,6 +117,13 @@ public class SignInActivity extends AppCompatActivity {
                         });
             }
         }
+    }
+
+    private void createUser(FirebaseUser firebaseUser) {
+        User user = new User();
+        user.setId(firebaseUser.getUid());
+        user.setEmail(firebaseUser.getEmail());
+        user.setName(nameEditText.getText().toString().trim());
     }
 
     public void toggleLoginMode(View view) {
