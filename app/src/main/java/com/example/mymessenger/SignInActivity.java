@@ -87,7 +87,9 @@ public class SignInActivity extends AppCompatActivity {
         }else {
             if (!passwordEditText.getText().toString().trim().equals(repeatPasswordEditText.getText().toString().trim())) {
                 Toast.makeText(SignInActivity.this, "Passwords don't match.", Toast.LENGTH_SHORT).show();
-            }else {
+            } else if (passwordEditText.getText().toString().trim().length() < 7){
+                Toast.makeText(SignInActivity.this, "The password must be at least 7 characters long.", Toast.LENGTH_SHORT).show();
+            } else {
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
