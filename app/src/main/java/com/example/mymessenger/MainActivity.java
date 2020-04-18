@@ -145,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        usersDatabaseReference.addChildEventListener(usersChildEventListener);
+
         messagesChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
