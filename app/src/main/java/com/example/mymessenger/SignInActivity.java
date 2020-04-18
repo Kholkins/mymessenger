@@ -44,7 +44,7 @@ public class SignInActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        usersDatabaseReference = database.getReference().child("messages");
+        usersDatabaseReference = database.getReference().child("users");
 
         if (auth.getCurrentUser() != null){
             startActivity(new Intent(SignInActivity.this, MainActivity.class));
@@ -130,6 +130,7 @@ public class SignInActivity extends AppCompatActivity {
         user.setId(firebaseUser.getUid());
         user.setEmail(firebaseUser.getEmail());
         user.setName(nameEditText.getText().toString().trim());
+        usersDatabaseReference.push().setValue(user);
     }
 
     public void toggleLoginMode(View view) {
