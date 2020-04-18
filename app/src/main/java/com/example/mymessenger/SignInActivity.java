@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -30,6 +32,8 @@ public class SignInActivity extends AppCompatActivity {
     private EditText repeatPasswordEditText;
 
     private FirebaseAuth auth;
+    private FirebaseDatabase database;
+    private DatabaseReference usersDatabaseReference;
 
     private boolean  loginModeActive;
 
@@ -39,6 +43,8 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        usersDatabaseReference = database.getReference().child("messages");
 
         if (auth.getCurrentUser() != null){
             startActivity(new Intent(SignInActivity.this, MainActivity.class));
