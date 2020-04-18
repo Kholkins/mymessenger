@@ -53,7 +53,10 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         messageDatabaseReference = database.getReference().child("messages");
 
-        username = "Default User";
+        Intent intent = getIntent();
+        if (intent != null){
+            username = intent.getStringExtra("userName");
+        }else  username = "Default User";
 
         listView = findViewById(R.id.messageListView);
         progressBar = findViewById(R.id.messageProgressBar);
