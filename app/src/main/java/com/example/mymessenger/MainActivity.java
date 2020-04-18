@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,8 +41,10 @@ public class MainActivity extends AppCompatActivity {
     private String username;
 
     private FirebaseDatabase database;
-    private DatabaseReference messageDatabaseReference;
+    private DatabaseReference messagesDatabaseReference;
     private ChildEventListener messagesChildEventListener;
+    private DatabaseReference usersDatabaseReference;
+    private ChildEventListener usersChildEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         database = FirebaseDatabase.getInstance();
-        messageDatabaseReference = database.getReference().child("messages");
+        messagesDatabaseReference = database.getReference().child("messages");
+        usersDatabaseReference = database.getReference().child("users");
 
         Intent intent = getIntent();
         if (intent != null){
@@ -100,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                  message.setName(username);
                  message.setImageURL(null);
 
-                 messageDatabaseReference.push().setValue(message);
+                 messagesDatabaseReference.push().setValue(message);
 
                 messageEditText.setText("");
             }
@@ -112,6 +114,36 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        usersChildEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                User user = dataSnapshot.getValue(User.class);
+                if(user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                    username = user.getName();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
 
         messagesChildEventListener = new ChildEventListener() {
             @Override
@@ -142,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        messageDatabaseReference.addChildEventListener(messagesChildEventListener);
+        messagesDatabaseReference.addChildEventListener(messagesChildEventListener);
     }
 
     @Override
