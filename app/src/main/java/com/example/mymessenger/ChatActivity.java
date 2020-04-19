@@ -36,7 +36,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity {
 
     private ListView listView;
     private MessageAdapter adapter;
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.sign_out:
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(MainActivity.this,SignInActivity.class));
+                startActivity(new Intent(ChatActivity.this,SignInActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
         }
