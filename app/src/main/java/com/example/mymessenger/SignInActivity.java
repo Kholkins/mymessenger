@@ -47,7 +47,7 @@ public class SignInActivity extends AppCompatActivity {
         usersDatabaseReference = database.getReference().child("users");
 
         if (auth.getCurrentUser() != null){
-            startActivity(new Intent(SignInActivity.this, ChatActivity.class));
+            startActivity(new Intent(SignInActivity.this, UserListActivity.class));
         }
 
         emailEditText = findViewById(R.id.emailEditText);
@@ -77,7 +77,7 @@ public class SignInActivity extends AppCompatActivity {
                                 Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = auth.getCurrentUser();
 //                                updateUI(user);
-                                Intent intent = new Intent(SignInActivity.this, ChatActivity.class);
+                                Intent intent = new Intent(SignInActivity.this, UserListActivity.class);
                                 intent.putExtra("userName", nameEditText.getText().toString().trim());
                                 startActivity(intent);
                             } else {
@@ -111,7 +111,7 @@ public class SignInActivity extends AppCompatActivity {
                                     FirebaseUser user = auth.getCurrentUser();
                                     createUser(user);
 //                            updateUI(user);
-                                    Intent intent = new Intent(SignInActivity.this, ChatActivity.class);
+                                    Intent intent = new Intent(SignInActivity.this, UserListActivity.class);
                                     intent.putExtra("userName", nameEditText.getText().toString().trim());
                                     startActivity(intent);
                                 } else {
