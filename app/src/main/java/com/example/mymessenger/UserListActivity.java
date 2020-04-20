@@ -9,6 +9,7 @@ import android.os.Bundle;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -31,10 +32,19 @@ public class UserListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
         
-        buildReciclerView();
+        buildRecyclerView();
+        attachUserDatabaseReferenceListener();
     }
 
-    private void buildReciclerView() {
+    private void attachUserDatabaseReferenceListener() {
+
+        usersDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+        if (usersChildEventListener == null) {
+
+        }
+    }
+
+    private void buildRecyclerView() {
         userRecyclerView = findViewById(R.id.userListRecyclerView);
         userRecyclerView.setHasFixedSize(true);
         userLayoutManager = new LinearLayoutManager(this);
