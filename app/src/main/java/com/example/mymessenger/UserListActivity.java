@@ -56,7 +56,7 @@ public class UserListActivity extends AppCompatActivity {
                  @Override
                  public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                      User user = dataSnapshot.getValue(User.class);
-                     if (user.getId() != auth.getCurrentUser().getUid()){
+                     if (user.getId().equals(auth.getCurrentUser().getUid()) ){
                          user.setAvatarMockUpResource(R.drawable.ic_person_24dp);
                          userArrayList.add(user);
                          userAdapter.notifyDataSetChanged();
