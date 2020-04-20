@@ -38,18 +38,19 @@ import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private ListView listView;
+    private ListView messageListView;
     private MessageAdapter adapter;
     private ProgressBar progressBar;
     private ImageButton sendImageButton;
     private Button sendMessageButton;
     private EditText messageEditText;
 
-    private String username;
+    private String userName;
     private String recipientUserId;
     private String recipientUserName;
 
     private static final int RC_IMAGE_PICKER = 123;
+
 
     private FirebaseAuth auth;
     private FirebaseDatabase database;
@@ -59,7 +60,7 @@ public class ChatActivity extends AppCompatActivity {
     private ChildEventListener usersChildEventListener;
 
     private FirebaseStorage storage;
-    private StorageReference chatImageStorageReference;
+    private StorageReference chatImagesStorageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class ChatActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            username = intent.getStringExtra("userName");
+            userName = intent.getStringExtra("userName");
             recipientUserId = intent.getStringExtra("recipientUserId");
             recipientUserName = intent.getStringExtra("recipientUserName");
         }
@@ -79,34 +80,41 @@ public class ChatActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
+
         messagesDatabaseReference = database.getReference().child("messages");
         usersDatabaseReference = database.getReference().child("users");
-        chatImageStorageReference = storage.getReference().child("chat_images");
+        chatImagesStorageReference = storage.getReference().child("chat_images");
 
-
-        listView = findViewById(R.id.messageListView);
         progressBar = findViewById(R.id.messageProgressBar);
         sendImageButton = findViewById(R.id.sendPhotoButton);
         sendMessageButton = findViewById(R.id.sendMessageButton);
         messageEditText = findViewById(R.id.messageEditText);
 
-        List<AwesomeMessage> messages = new ArrayList<>();
-        adapter = new MessageAdapter(this,R.layout.message_item,messages);
-        listView.setAdapter(adapter);
+        messageListView = findViewById(R.id.messageListView);
+        List<AwesomeMessage> awesomeMessages = new ArrayList<>();
+        adapter = new MessageAdapter(this, R.layout.message_item,
+                awesomeMessages);
+        messageListView.setAdapter(adapter);
 
-        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(ProgressBar.INVISIBLE);
 
         messageEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                 if (s.toString().trim().length()>0){
-                     sendMessageButton.setEnabled(true);
-                 }else sendMessageButton.setEnabled(false);
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+
+                if (s.toString().trim().length() > 0) {
+                    sendMessageButton.setEnabled(true);
+                } else {
+                    sendMessageButton.setEnabled(false);
+                }
+
             }
 
             @Override
@@ -115,20 +123,21 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        messageEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(500)});
+        messageEditText.setFilters(new InputFilter[]
+                {new InputFilter.LengthFilter(500)});
 
         sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                 AwesomeMessage message = new AwesomeMessage();
-                 message.setText(messageEditText.getText().toString());
-                 message.setName(username);
-                 message.setSender(auth.getCurrentUser().getUid());
-                 message.setRecipient(recipientUserId);
-                 message.setImageURL(null);
+                AwesomeMessage message = new AwesomeMessage();
+                message.setText(messageEditText.getText().toString());
+                message.setName(userName);
+                message.setSender(auth.getCurrentUser().getUid());
+                message.setRecipient(recipientUserId);
+                message.setImageURL(null);
 
-                 messagesDatabaseReference.push().setValue(message);
+                messagesDatabaseReference.push().setValue(message);
 
                 messageEditText.setText("");
             }
@@ -137,10 +146,11 @@ public class ChatActivity extends AppCompatActivity {
         sendImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentImage = new Intent(Intent.ACTION_GET_CONTENT);
-                intentImage.setType("image/*");
-                intentImage.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivityForResult(Intent.createChooser(intentImage, "Choose an image"), RC_IMAGE_PICKER);
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(intent, "Choose an image"),
+                        RC_IMAGE_PICKER);
             }
         });
 
@@ -148,8 +158,8 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 User user = dataSnapshot.getValue(User.class);
-                if(user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
-                    username = user.getName();
+                if (user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    userName = user.getName();
                 }
             }
 
@@ -179,13 +189,19 @@ public class ChatActivity extends AppCompatActivity {
         messagesChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                AwesomeMessage message = dataSnapshot.getValue(AwesomeMessage.class);
+                AwesomeMessage message =
+                        dataSnapshot.getValue(AwesomeMessage.class);
 
                 if (message.getSender().equals(auth.getCurrentUser().getUid())
-                    && message.getRecipient().equals(recipientUserId)) {
+                        && message.getRecipient().equals(recipientUserId)) {
+                    message.setMine(true);
+                    message.setName(userName);
+                    adapter.add(message);
+                } else if (message.getRecipient().equals(auth.getCurrentUser().getUid())
+                        && message.getSender().equals(recipientUserId)) {
+                    message.setMine(false);
                     adapter.add(message);
                 }
-
             }
 
             @Override
@@ -214,20 +230,19 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
-
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.sign_out:
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(ChatActivity.this,SignInActivity.class));
+                startActivity(new Intent(ChatActivity.this, SignInActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -238,7 +253,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_IMAGE_PICKER && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
-            final StorageReference imageReference = chatImageStorageReference
+            final StorageReference imageReference = chatImagesStorageReference
                     .child(selectedImageUri.getLastPathSegment());
 
             UploadTask uploadTask = imageReference.putFile(selectedImageUri);
@@ -262,8 +277,9 @@ public class ChatActivity extends AppCompatActivity {
                         Uri downloadUri = task.getResult();
                         AwesomeMessage message = new AwesomeMessage();
                         message.setImageURL(downloadUri.toString());
-                        message.setName(username);
-
+                        message.setName(userName);
+                        message.setSender(auth.getCurrentUser().getUid());
+                        message.setRecipient(recipientUserId);
                         messagesDatabaseReference.push().setValue(message);
                     } else {
                         // Handle failures
