@@ -6,7 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -35,6 +39,10 @@ public class UserListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
+
+        auth = FirebaseAuth.getInstance();
+
+        userArrayList = new ArrayList<>();
         
         buildRecyclerView();
         attachUserDatabaseReferenceListener();
@@ -48,9 +56,12 @@ public class UserListActivity extends AppCompatActivity {
                  @Override
                  public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                      User user = dataSnapshot.getValue(User.class);
-                     user.setAvatarMockUpResource(R.drawable.ic_person_24dp);
-                     userArrayList.add(user);
-                     userAdapter.notifyDataSetChanged();
+                     if (user.getId() != auth.getCurrentUser().getUid()){
+                         user.setAvatarMockUpResource(R.drawable.ic_person_24dp);
+                         userArrayList.add(user);
+                         userAdapter.notifyDataSetChanged();
+                     }
+
                  }
 
                  @Override
@@ -73,6 +84,7 @@ public class UserListActivity extends AppCompatActivity {
 
                  }
              };
+             usersDatabaseReference.addChildEventListener(usersChildEventListener);
         }
     }
 
@@ -84,5 +96,26 @@ public class UserListActivity extends AppCompatActivity {
 
         userRecyclerView.setLayoutManager(userLayoutManager);
         userRecyclerView.setAdapter(userAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.sign_out:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(UserListActivity.this,SignInActivity.class));
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
