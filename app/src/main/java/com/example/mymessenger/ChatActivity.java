@@ -46,9 +46,12 @@ public class ChatActivity extends AppCompatActivity {
     private EditText messageEditText;
 
     private String username;
+    private String recipientUserId;
+    private String recipientUserName;
 
     private static final int RC_IMAGE_PICKER = 123;
 
+    private FirebaseAuth auth;
     private FirebaseDatabase database;
     private DatabaseReference messagesDatabaseReference;
     private ChildEventListener messagesChildEventListener;
@@ -63,16 +66,23 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        auth = FirebaseAuth.getInstance();
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            username = intent.getStringExtra("userName");
+            recipientUserId = intent.getStringExtra("recipientUserId");
+            recipientUserName = intent.getStringExtra("recipientUserName");
+        }
+
+        setTitle("Chat with " + recipientUserName);
+
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
         messagesDatabaseReference = database.getReference().child("messages");
         usersDatabaseReference = database.getReference().child("users");
         chatImageStorageReference = storage.getReference().child("chat_images");
 
-        Intent intent = getIntent();
-        if (intent != null){
-            username = intent.getStringExtra("userName");
-        }else  username = "Default User";
 
         listView = findViewById(R.id.messageListView);
         progressBar = findViewById(R.id.messageProgressBar);
@@ -114,6 +124,7 @@ public class ChatActivity extends AppCompatActivity {
                  AwesomeMessage message = new AwesomeMessage();
                  message.setText(messageEditText.getText().toString());
                  message.setName(username);
+                 message.setSender(auth.getCurrentUser().getUid());
                  message.setImageURL(null);
 
                  messagesDatabaseReference.push().setValue(message);

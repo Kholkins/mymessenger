@@ -40,6 +40,11 @@ public class UserListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
 
+        Intent intent = getIntent();
+        if (intent != null) {
+            userName = intent.getStringExtra("userName");
+        }
+
         auth = FirebaseAuth.getInstance();
 
         userArrayList = new ArrayList<>();
@@ -108,10 +113,8 @@ public class UserListActivity extends AppCompatActivity {
     private void goToChat(int position) {
         Intent intent = new Intent(UserListActivity.this,
                 ChatActivity.class);
-        intent.putExtra("recipientUserId",
-                userArrayList.get(position).getId());
-        intent.putExtra("recipientUserName",
-                userArrayList.get(position).getName());
+        intent.putExtra("recipientUserId", userArrayList.get(position).getId());
+        intent.putExtra("recipientUserName", userArrayList.get(position).getName());
         intent.putExtra("userName", userName);
         startActivity(intent);
     }
