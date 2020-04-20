@@ -56,7 +56,7 @@ public class UserListActivity extends AppCompatActivity {
                  @Override
                  public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                      User user = dataSnapshot.getValue(User.class);
-                     if (user.getId().equals(auth.getCurrentUser().getUid()) ){
+                     if (!user.getId().equals(auth.getCurrentUser().getUid()) ){
                          user.setAvatarMockUpResource(R.drawable.ic_person_24dp);
                          userArrayList.add(user);
                          userAdapter.notifyDataSetChanged();
@@ -96,6 +96,24 @@ public class UserListActivity extends AppCompatActivity {
 
         userRecyclerView.setLayoutManager(userLayoutManager);
         userRecyclerView.setAdapter(userAdapter);
+
+        userAdapter.setOnUserClickListener(new UserAdapter.OnUserClickListener() {
+            @Override
+            public void onUserClick(int position) {
+                goToChat(position);
+            }
+        });
+    }
+
+    private void goToChat(int position) {
+        Intent intent = new Intent(UserListActivity.this,
+                ChatActivity.class);
+        intent.putExtra("recipientUserId",
+                userArrayList.get(position).getId());
+        intent.putExtra("recipientUserName",
+                userArrayList.get(position).getName());
+        intent.putExtra("userName", userName);
+        startActivity(intent);
     }
 
     @Override
