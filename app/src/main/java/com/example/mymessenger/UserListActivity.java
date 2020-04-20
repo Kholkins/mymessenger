@@ -1,6 +1,7 @@
 package com.example.mymessenger;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -34,5 +35,12 @@ public class UserListActivity extends AppCompatActivity {
     }
 
     private void buildReciclerView() {
+        userRecyclerView = findViewById(R.id.userListRecyclerView);
+        userRecyclerView.setHasFixedSize(true);
+        userLayoutManager = new LinearLayoutManager(this);
+        userAdapter = new UserAdapter(userArrayList);
+
+        userRecyclerView.setLayoutManager(userLayoutManager);
+        userRecyclerView.setAdapter(userAdapter);
     }
 }
