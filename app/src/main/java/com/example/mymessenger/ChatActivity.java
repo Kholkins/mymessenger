@@ -125,6 +125,7 @@ public class ChatActivity extends AppCompatActivity {
                  message.setText(messageEditText.getText().toString());
                  message.setName(username);
                  message.setSender(auth.getCurrentUser().getUid());
+                 message.setRecipient(recipientUserId);
                  message.setImageURL(null);
 
                  messagesDatabaseReference.push().setValue(message);
@@ -178,9 +179,13 @@ public class ChatActivity extends AppCompatActivity {
         messagesChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                AwesomeMessage message =
-                        dataSnapshot.getValue(AwesomeMessage.class);
-                adapter.add(message);
+                AwesomeMessage message = dataSnapshot.getValue(AwesomeMessage.class);
+
+                if (message.getSender().equals(auth.getCurrentUser().getUid())
+                    && message.getRecipient().equals(recipientUserId)) {
+                    adapter.add(message);
+                }
+
             }
 
             @Override
