@@ -1,7 +1,6 @@
 package com.example.mymessenger;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +41,9 @@ public class MessageAdapter extends ArrayAdapter<AwesomeMessage> {
         int viewType = getItemViewType(position);
 
         if (viewType == 0) {
-            layoutResource = R.layout.you_message_item;
-        } else {
             layoutResource = R.layout.my_message_item;
+        } else {
+            layoutResource = R.layout.you_message_item;
         }
 
         if (convertView != null) {
